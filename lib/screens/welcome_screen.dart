@@ -1,8 +1,8 @@
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:sih2020/screens/login_screen.dart';
-import 'components/rounded_button.dart';
-import 'screens/registration_screen.dart';
+import '../components/rounded_button.dart';
+import 'registration_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
   static String screenID = 'welcome_screen';
