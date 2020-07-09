@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sih2020/components/rounded_button.dart';
 import 'package:sih2020/components/round_icon.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sih2020/screens/registration_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   static String screenID = 'login_screen';
@@ -50,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           cursorColor: Colors.green,
                           keyboardType: TextInputType.emailAddress,
                           decoration: InputDecoration(
-                            hintText: "Your email",
+                            hintText: "Your Email",
                             hintStyle: TextStyle(
                               color: Colors.grey
                             )
@@ -161,7 +162,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           },
                           child: InkWell(
                             onTap: () {
-                              print('Hello');
+                              Navigator.pop(context);
+                              Navigator.pushNamed(context, RegistrationScreen.screenID);
                             },
                             child: Text(
                               'Register',

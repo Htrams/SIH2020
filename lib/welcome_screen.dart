@@ -2,6 +2,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:sih2020/screens/login_screen.dart';
 import 'components/rounded_button.dart';
+import 'screens/registration_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
   static String screenID = 'welcome_screen';
@@ -54,11 +55,15 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 onPressed: () {
                   Navigator.pushNamed(context, LoginScreen.screenID);
                 },
-                color: Colors.white,
-//                color: Color(0xff4ACDDA)
+                color: Color(0xfff5f9fa),
               ),
               RoundedButton(
-                  text: 'Register', onPressed: () {}, color: Colors.white),
+                text: 'Register',
+                onPressed: () {
+                  Navigator.pushNamed(context, RegistrationScreen.screenID);
+                },
+                color: Color(0xfff5f9fa)
+              ),
             ],
           ),
         ),
