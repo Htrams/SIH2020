@@ -3,6 +3,7 @@ import 'package:sih2020/components/rounded_button.dart';
 import 'package:sih2020/components/round_icon.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sih2020/screens/login_screen.dart';
+import 'package:sih2020/screens/vehicle_list_screen.dart';
 
 class RegistrationScreen extends StatefulWidget {
   static String screenID = 'registration_screen';
@@ -107,6 +108,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       RoundedButton(
                         text: 'Register',
                         onPressed: () {
+                          Navigator.pushNamed(context, VehicleListScreen.screenID);
                         },
                         color: Colors.blueAccent,
                         textColor: Colors.white,
