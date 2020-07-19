@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sih2020/components/vehicle.dart';
+import 'package:sih2020/components/side_menu_drawer.dart';
+import 'package:sih2020/screens/add_new_vehicle_screen.dart';
 
 class VehicleListScreen extends StatefulWidget {
   static String screenID = 'vehicle_list_screen';
@@ -28,13 +30,18 @@ class _VehicleListScreenState extends State<VehicleListScreen> {
   ];
 
   int selectedVehicle = 0;
+  bool moreVehicleDetails = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: SideMenuDrawer(),
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
+        iconTheme: IconThemeData(
+          color: Colors.black45
+        ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(25.0)
         ),
@@ -47,10 +54,39 @@ class _VehicleListScreenState extends State<VehicleListScreen> {
             fontSize: 25.0
           ),
         ),
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(40.0),
+          child: Material(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10.0),
+            child: OutlineButton(
+              onPressed: () {
+
+              },
+              borderSide: BorderSide(
+                color: Colors.blue
+              ),
+              child: Text(
+                'Start a Journey',
+                style: TextStyle(
+                  fontSize: 18.0,
+                  color: Colors.green
+                ),
+              ),
+            ),
+          ),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-
+        onPressed: () async{
+           Vehicle newVehicle = await Navigator.push(context,MaterialPageRoute(
+            builder: (context) => NewVehicleScreen()
+          ));
+           if (newVehicle != null) {
+             setState(() {
+               vehicleList.add(newVehicle);
+             });
+           }
         },
         child: Icon(
           FontAwesomeIcons.plus
@@ -62,12 +98,19 @@ class _VehicleListScreenState extends State<VehicleListScreen> {
         itemBuilder: (context, int index) {
           return GestureDetector(
             onTap: () {
+              if (selectedVehicle == index && moreVehicleDetails == false) {
+                moreVehicleDetails = true;
+              }
+              else if(selectedVehicle == index && moreVehicleDetails == true) {
+                moreVehicleDetails = false;
+              }
               setState(() {
                 selectedVehicle = index;
               });
             },
             child: vehicleList[index].getVehicleAsListItem(
-              selected: index==selectedVehicle
+              selectedVehicle: index==selectedVehicle,
+              expandedVehicleDetails: moreVehicleDetails,
             )
           );
         },
