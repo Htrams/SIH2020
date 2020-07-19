@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-# sih2020
+# SIH2020
 
 A new Flutter application.
 
@@ -18,4 +17,7 @@ samples, guidance on mobile development, and a full API reference.
 =======
 # SIH2020
 SIH 2020 Project by The GitBit
+<<<<<<< HEAD
 >>>>>>> 270f2c7... Initial commit
+=======
+>>>>>>> c78d2cd... Update README.md
