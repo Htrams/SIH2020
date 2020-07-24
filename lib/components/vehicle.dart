@@ -24,30 +24,33 @@ class Vehicle {
       subtextColor: selectedVehicle ? Colors.white : Colors.grey.shade600,
       bottomWidget: selectedVehicle && expandedVehicleDetails ? Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              'Journey\'s Completed - 20',
-              style: TextStyle(
-                fontSize: 20.0,
-                color: Colors.lightGreen.shade100
-              ),
-            ),Text(
-              'Distance Covered - 300 Km',
-              style: TextStyle(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                'Journey\'s Completed - 20',
+                style: TextStyle(
                   fontSize: 20.0,
                   color: Colors.lightGreen.shade100
+                ),
+              ),Text(
+                'Distance Covered - 300 Km',
+                style: TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.lightGreen.shade100
+                ),
               ),
-            ),
-            Text(
-              'Fuel Saved - 10L',
-              style: TextStyle(
-                  fontSize: 20.0,
-                  color: Colors.lightGreen.shade100
+              Text(
+                'Fuel Saved - 10L',
+                style: TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.lightGreen.shade100
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ) : null,
     );

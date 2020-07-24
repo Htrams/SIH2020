@@ -43,13 +43,21 @@ class SideMenuDrawer extends StatelessWidget {
           ),
           Divider(),
           SideMenuListTile(
+            icon: FontAwesomeIcons.history,
+            text: "Travel History",
+            onTap: () {
+
+            },
+          ),
+          Divider(),
+          SideMenuListTile(
             icon: FontAwesomeIcons.signOutAlt,
             text: "Sign Out",
             onTap: () {
               Navigator.popUntil(context, ModalRoute.withName(WelcomeScreen.screenID));
             },
           ),
-          Divider()
+          Divider(),
         ],
       ),
     );

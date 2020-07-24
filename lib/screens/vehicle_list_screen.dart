@@ -25,8 +25,6 @@ class _VehicleListScreenState extends State<VehicleListScreen> {
       carName: 'Nixon',
       lastTravelled: '10 days ago'
     ),
-    Vehicle(),
-    Vehicle()
   ];
 
   int selectedVehicle = 0;
