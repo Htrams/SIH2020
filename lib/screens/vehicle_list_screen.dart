@@ -59,7 +59,7 @@ class _VehicleListScreenState extends State<VehicleListScreen> {
             borderRadius: BorderRadius.circular(10.0),
             child: OutlineButton(
               onPressed: () {
-
+               Navigator.pushNamed(context, DestinationScreen.screenID);
               },
               borderSide: BorderSide(
                 color: Colors.blue
