@@ -79,7 +79,7 @@ class _VehicleListScreenState extends State<VehicleListScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async{
            Vehicle newVehicle = await Navigator.push(context,MaterialPageRoute(
-            builder: (context) => NewVehicleScreen()
+            builder: (context) => NewVehicleScreen(Vehicle())
           ));
            if (newVehicle != null) {
              setState(() {
@@ -110,6 +110,24 @@ class _VehicleListScreenState extends State<VehicleListScreen> {
             child: vehicleList[index].getVehicleAsListItem(
               selectedVehicle: index==selectedVehicle,
               expandedVehicleDetails: moreVehicleDetails,
+              popUpMenuOnSelected: (selectedPopUpItem) async {
+                if(selectedPopUpItem == 'Edit') {
+                  Vehicle editedVehicle = await Navigator.push(context,MaterialPageRoute(
+                    builder: (context) => NewVehicleScreen(vehicleList[index])
+                  ));
+                  if(editedVehicle!=null) {
+                    setState(() {
+
+                    });
+                  }
+                }
+                else if(selectedPopUpItem == 'Delete') {
+                  vehicleList.removeAt(index);
+                  setState(() {
+
+                  });
+                }
+              }
             )
           );
         },

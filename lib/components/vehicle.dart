@@ -1,20 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sih2020/components/customizable_card.dart';
+import 'package:sih2020/constants.dart';
+import 'package:sih2020/screens/add_new_vehicle_screen.dart';
 
 class Vehicle {
 
-  final String carName;
-  final String lastTravelled;
-  final IconData icon;
+  String carName;
+  String lastTravelled;
+  IconData icon;
+  FuelTypes fuelType;
+  double kilometersDriven;
+  RangeValues mileage;
+  DateTime serviceDate;
+  DateTime buyDate;
 
   Vehicle({
-    this.carName = 'Car',
+    this.carName,
     this.lastTravelled = 'Never',
     this.icon = FontAwesomeIcons.car,
+    this.mileage,
+    this.buyDate,
+    this.kilometersDriven,
+    this.serviceDate,
+    this.fuelType
   });
 
-  Widget getVehicleAsListItem({bool selectedVehicle = false, bool expandedVehicleDetails = false}) {
+  Widget getVehicleAsListItem({bool selectedVehicle = false, bool expandedVehicleDetails = false, void Function(dynamic) popUpMenuOnSelected}) {
     return CustomizableCard(
       backgroundColor: selectedVehicle ? Color(0xff369df7) : Colors.white,
       titleColor: selectedVehicle ? Colors.white : Colors.black,
@@ -42,10 +54,25 @@ class Vehicle {
             text: 'Statistics',
           ),
         ),
+        PopupMenuItem(
+          value: 'Delete',
+          child: PopUpMenuContent(
+            icon: FontAwesomeIcons.trash,
+            text: 'Delete',
+          ),
+        ),
       ],
-      popUpMenuOnSelected: (selectedPopUpItem) {
-        print('$carName and $selectedPopUpItem');
-      },
+      popUpMenuOnSelected: popUpMenuOnSelected,
+//      popUpMenuOnSelected: (selectedPopUpItem) async{
+//        print('$carName and $selectedPopUpItem');
+//        if(selectedPopUpItem == 'Edit') {
+//          Vehicle editedVehicle = await Navigator.push(context,MaterialPageRoute(
+//              builder: (context) => NewVehicleScreen(this)
+//          ));
+//          if(editedVehicle!=null) {
+//          }
+//        }
+//      },
       bottomWidget: selectedVehicle && expandedVehicleDetails ? Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Row(
