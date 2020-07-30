@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sih2020/components/vehicle.dart';
 import 'package:sih2020/components/side_menu_drawer.dart';
 import 'package:sih2020/screens/add_new_vehicle_screen.dart';
+import 'package:sih2020/screens/destination_screen.dart';
 
 class VehicleListScreen extends StatefulWidget {
   static String screenID = 'vehicle_list_screen';
