@@ -17,7 +17,8 @@ class MyApp extends StatelessWidget {
         WelcomeScreen.screenID :(context) => WelcomeScreen(),
         LoginScreen.screenID:(context) => LoginScreen(),
         RegistrationScreen.screenID:(context) => RegistrationScreen(),
-        VehicleListScreen.screenID:(context) => VehicleListScreen()
+        VehicleListScreen.screenID:(context) => VehicleListScreen(),
+        DestinationScreen.screenID:(context) => DestinationScreen(),
       },
     );
   }
