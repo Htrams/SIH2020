@@ -4,7 +4,7 @@ import 'package:sih2020/screens/vehicle_list_screen.dart';
 import 'screens/welcome_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/destination_screen.dart';
-import 'screens/red_screen2.dart';
+import 'screens/red_screen.dart';
 
 void main() {
   runApp(MyApp());
