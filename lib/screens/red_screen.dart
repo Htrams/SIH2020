@@ -38,12 +38,16 @@ class _RedScreenState extends State<RedScreen> {
     topRight: Radius.circular(30.0),
   );
 
+  mode activeMode = mode.red;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.redAccent,
-        title: Text('Fuel Critical'),
+        backgroundColor: modeInfo[activeMode].color,
+        title: Text(
+            modeInfo[activeMode].title
+        ),
         centerTitle: true,
       ),
       body: SlidingUpPanel(
@@ -57,7 +61,7 @@ class _RedScreenState extends State<RedScreen> {
           height: minHeight,
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
-            color: Colors.redAccent.shade200,
+            color: modeInfo[activeMode].color,
             borderRadius: radius
           ),
           child: Padding(
@@ -80,7 +84,7 @@ class _RedScreenState extends State<RedScreen> {
                         height: 8.0,
                       ),
                       Text(
-                        'Refuel on the next gas Station',
+                        modeInfo[activeMode].message,
                         style: TextStyle(
                           fontSize: 16.0
                         ),

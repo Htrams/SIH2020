@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sih2020/screens/red_screen.dart';
 
 class DestinationScreen extends StatefulWidget {
   @override
@@ -29,7 +31,15 @@ class _DestinationScreenState extends State<DestinationScreen> {
               fontWeight: FontWeight.w500,
             ),
           ),
-    centerTitle: true,
+        centerTitle: true,
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, RedScreen.screenID);
+        },
+        child: Icon(
+          FontAwesomeIcons.arrowRight
+        ),
       ),
       body: Container(
         margin: EdgeInsets.all(10),
