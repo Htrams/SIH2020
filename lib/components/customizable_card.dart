@@ -16,6 +16,8 @@ class CustomizableCard extends StatelessWidget {
   final Gradient gradient;
   final void Function(dynamic) popUpMenuOnSelected;
   final List<PopupMenuItem> popUpMenuItems;
+  final bool openExpandableWidget;
+  final Widget expandableWidget;
 
 
   CustomizableCard({
@@ -32,6 +34,8 @@ class CustomizableCard extends StatelessWidget {
     this.gradient,
     this.popUpMenuOnSelected,
     this.popUpMenuItems,
+    this.expandableWidget,
+    this.openExpandableWidget = true,
   });
 
   @override
@@ -50,7 +54,7 @@ class CustomizableCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Padding(
+            popUpMenuItems!=null ? Padding(
               padding: const EdgeInsets.only(right: 16.0,top: 5.0),
               child: Align(
                 alignment: Alignment.topRight,
@@ -65,6 +69,8 @@ class CustomizableCard extends StatelessWidget {
                   ),
                 ),
               ),
+            ):SizedBox(
+              height: 5,
             ),
             Padding(
               padding: const EdgeInsets.only(left: 10.0,right: 10.0,bottom: 12.0),
@@ -111,7 +117,8 @@ class CustomizableCard extends StatelessWidget {
             ),
             Container(
                 child: bottomWidget
-            )
+            ),
+            openExpandableWidget && expandableWidget!=null ? expandableWidget:SizedBox(),
           ],
         ),
       ),

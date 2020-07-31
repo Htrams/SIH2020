@@ -39,6 +39,37 @@ class _RedScreenState extends State<RedScreen> {
   );
 
   mode activeMode = mode.red;
+  int pumpMoreDetails = -1;
+  PanelController slidingPanelController = PanelController();
+
+  TableRow getCheckedTwoColumnTableRow(String text, bool check) {
+    return TableRow(
+        children: <Widget>[
+          TableCell(
+            verticalAlignment: TableCellVerticalAlignment.middle,
+            child: Text(
+              text,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 17.0
+              ),
+            ),
+          ),
+          TableCell(
+            child: check ?
+              Icon(
+                FontAwesomeIcons.check,
+                color: Colors.green,
+              ):
+              Icon(
+                Icons.close,
+                color: Colors.red,
+                size: 30.0,
+              )
+          )
+        ]
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,53 +82,68 @@ class _RedScreenState extends State<RedScreen> {
         centerTitle: true,
       ),
       body: SlidingUpPanel(
+        controller: slidingPanelController,
         renderPanelSheet: true,
         parallaxEnabled: true,
         parallaxOffset: .5,
         backdropEnabled: true,
         minHeight: minHeight,
         borderRadius: radius,
-        header: Container(
-          height: minHeight,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            color: modeInfo[activeMode].color,
-            borderRadius: radius
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      Text(
-                        'Suggested Fuel Pumps',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize:20.0,
-                          fontWeight: FontWeight.bold
+        header: GestureDetector(
+          onTapDown: (details) async{
+            print('hello');
+            if(slidingPanelController.isPanelOpen) {
+              await slidingPanelController.close();
+            }
+            else {
+              await slidingPanelController.open();
+            }
+            setState(() {
+
+            });
+          },
+          child: Container(
+            height: minHeight,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+              color: modeInfo[activeMode].color,
+              borderRadius: radius
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        Text(
+                          'Suggested Fuel Pumps',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize:20.0,
+                            fontWeight: FontWeight.bold
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 8.0,
-                      ),
-                      Text(
-                        modeInfo[activeMode].message,
-                        style: TextStyle(
-                          fontSize: 16.0
+                        SizedBox(
+                          height: 8.0,
                         ),
-                        textAlign: TextAlign.center,
-                      )
-                    ],
+                        Text(
+                          modeInfo[activeMode].message,
+                          style: TextStyle(
+                            fontSize: 16.0
+                          ),
+                          textAlign: TextAlign.center,
+                        )
+                      ],
+                    ),
                   ),
-                ),
-                Icon(
-                  FontAwesomeIcons.angleUp,
-                  size: 35,
-                )
-              ],
+                  Icon(
+                    slidingPanelController.isAttached && slidingPanelController.isPanelOpen ? FontAwesomeIcons.angleDown : FontAwesomeIcons.angleUp,
+                    size: 35,
+                  )
+                ],
+              ),
             ),
           ),
         ),
@@ -107,41 +153,68 @@ class _RedScreenState extends State<RedScreen> {
             padding: EdgeInsets.all(10.0),
             itemCount: stations.length,
             itemBuilder: (context, int index) {
-              return CustomizableCard(
-                icon: FontAwesomeIcons.gasPump,
-                title: stations[index].stationName,
-                titleSize: 25.0,
-                elevation: 7.0,
-                subWidget: SmoothStarRating(
-                    allowHalfRating: true,
-                    onRated: (v) {
-                    },
-                    starCount: 5,
-                    rating: stations[index].rating,
-                    size: 40.0,
-                    isReadOnly:true,
-                    color: Colors.green,
-                    borderColor: Colors.green,
-                    spacing:0.0
-                ),
-                bottomWidget: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[
-                    CustomizableCardInformationBottomWidget(
-                      title: 'Expected Cost',
-                      value: 100.00,
-                      unit: 'Rs',
-                      unitAfterTitle: false,
-                      titleColor: Colors.grey,
+              return GestureDetector(
+                onTap: () {
+                  if (pumpMoreDetails!=-1 && pumpMoreDetails==index)
+                    pumpMoreDetails=-1;
+                  else
+                    pumpMoreDetails=index;
+                  setState(() {
+                  });
+                },
+                child: CustomizableCard(
+                  icon: FontAwesomeIcons.gasPump,
+                  title: stations[index].stationName,
+                  titleSize: 25.0,
+                  elevation: 7.0,
+                  subWidget: SmoothStarRating(
+                      allowHalfRating: true,
+                      onRated: (v) {
+                      },
+                      starCount: 5,
+                      rating: stations[index].rating,
+                      size: 40.0,
+                      isReadOnly:true,
+                      color: Colors.green,
+                      borderColor: Colors.green,
+                      spacing:0.0
+                  ),
+                  bottomWidget: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      CustomizableCardInformationBottomWidget(
+                        title: 'Expected Cost',
+                        value: 100.00,
+                        unit: 'Rs',
+                        unitAfterTitle: false,
+                        titleColor: Colors.grey,
+                      ),
+                      CustomizableCardInformationBottomWidget(
+                        title: 'Estimated Distance',
+                        titleColor: Colors.grey,
+                        value: 5,
+                        unit: 'Km',
+                      ),
+                    ],
+                  ),
+                  expandableWidget: Padding(
+                    padding: const EdgeInsets.only(top: 5.0),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Table(
+                        border: TableBorder.symmetric(
+                          inside: BorderSide(color: Colors.black)
+                        ),
+                        children: <TableRow>[
+                          getCheckedTwoColumnTableRow('Air', true),
+                          getCheckedTwoColumnTableRow('Washroom', false),
+                          getCheckedTwoColumnTableRow('Eatables', true)
+                        ],
+                      ),
                     ),
-                    CustomizableCardInformationBottomWidget(
-                      title: 'Estimated Time',
-                      titleColor: Colors.grey,
-                      value: 5,
-                      unit: 'Km',
-                    ),
-                  ],
+                  ),
+                  openExpandableWidget: pumpMoreDetails == index,
                 ),
               );
             },
@@ -157,3 +230,4 @@ class _RedScreenState extends State<RedScreen> {
     );
   }
 }
+
