@@ -5,11 +5,13 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class CustomizableCard extends StatelessWidget {
   final Color backgroundColor;
   final Color titleColor;
+  final double titleSize;
   final double elevation;
   final IconData icon;
   final String title;
   final String subtext1;
   final Color subtextColor;
+  final Widget subWidget;
   final Widget bottomWidget;
   final Gradient gradient;
   final void Function(dynamic) popUpMenuOnSelected;
@@ -19,11 +21,13 @@ class CustomizableCard extends StatelessWidget {
   CustomizableCard({
     this.backgroundColor = Colors.white,
     this.titleColor = Colors.black,
+    this.titleSize = 32.0,
     this.elevation = 0.0,
     @required this.icon,
     @required this.title,
     this.subtext1,
     this.subtextColor,
+    this.subWidget,
     this.bottomWidget,
     this.gradient,
     this.popUpMenuOnSelected,
@@ -88,17 +92,18 @@ class CustomizableCard extends StatelessWidget {
                       Text(
                         title,
                         style: TextStyle(
-                            fontSize: 32.0,
+                            fontSize: titleSize,
                             color: titleColor
                         ),
                       ),
-                      Text(
+                      subtext1!=null ? Text(
                         subtext1,
                         style: TextStyle(
                             fontSize: 18.0,
                             color: subtextColor
                         ),
-                      ),
+                      ):SizedBox(),
+                      subWidget ?? SizedBox(),
                     ],
                   ),
                 ],

@@ -5,3 +5,9 @@ enum FuelTypes {
   LPG,
   Electric
 }
+
+enum mode{
+  red,
+  yellow,
+  green
+}

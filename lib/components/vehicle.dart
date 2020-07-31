@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sih2020/components/customizable_card.dart';
 import 'package:sih2020/constants.dart';
-import 'package:sih2020/screens/add_new_vehicle_screen.dart';
+import 'customizable_card_information_bottom_widget.dart';
 
 class Vehicle {
 
@@ -79,16 +79,16 @@ class Vehicle {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
-            VehicleListItemInformationBottomWidget(
+            CustomizableCardInformationBottomWidget(
               title: 'Journeys Completed',
               value: 20,
             ),
-            VehicleListItemInformationBottomWidget(
+            CustomizableCardInformationBottomWidget(
               title: 'Kilometers Travelled',
               value: 751,
               unit: 'Km',
             ),
-            VehicleListItemInformationBottomWidget(
+            CustomizableCardInformationBottomWidget(
               title: 'Fuel Saved',
               value: 20,
               unit: 'L',
@@ -118,52 +118,6 @@ class PopUpMenuContent extends StatelessWidget {
           text
         )
       ],
-    );
-  }
-}
-
-class VehicleListItemInformationBottomWidget extends StatelessWidget {
-
-  final String title;
-  final double value;
-  final String unit;
-
-  VehicleListItemInformationBottomWidget({this.title,this.value,this.unit = ''});
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Container(
-            child: Text(
-              title,
-              textAlign: TextAlign.center,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: 17.0,
-                fontWeight: FontWeight.bold,
-                color: Colors.green.shade50
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 10.0,
-          ),
-          Text(
-            '$value $unit',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.greenAccent,
-              fontWeight: FontWeight.bold,
-              fontSize: 22.0
-            ),
-          )
-        ],
-      ),
     );
   }
 }
