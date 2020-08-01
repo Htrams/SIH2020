@@ -5,6 +5,7 @@ import 'screens/welcome_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/destination_screen.dart';
 import 'screens/red_screen.dart';
+import 'screens/review_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: WelcomeScreen.screenID,
+      initialRoute: ReviewScreen.screenID,
       routes: {
         WelcomeScreen.screenID :(context) => WelcomeScreen(),
         LoginScreen.screenID:(context) => LoginScreen(),
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
         VehicleListScreen.screenID:(context) => VehicleListScreen(),
         DestinationScreen.screenID:(context) => DestinationScreen(),
         RedScreen.screenID:(context) => RedScreen(),
+        ReviewScreen.screenID:(context) => ReviewScreen()
       },
     );
   }
