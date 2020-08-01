@@ -10,8 +10,10 @@ class Vehicle {
   String lastTravelled;
   IconData icon;
   FuelTypes fuelType;
+  double tankCapacity;
   double kilometersDriven;
   RangeValues mileage;
+  double finalMileage;
   DateTime serviceDate;
   DateTime buyDate;
 
@@ -20,10 +22,12 @@ class Vehicle {
     this.lastTravelled = 'Never',
     this.icon = FontAwesomeIcons.car,
     this.mileage,
+    this.finalMileage,
     this.buyDate,
     this.kilometersDriven,
     this.serviceDate,
-    this.fuelType
+    this.fuelType,
+    this.tankCapacity
   });
 
   Widget getVehicleAsListItem({bool selectedVehicle = false, bool expandedVehicleDetails = false, void Function(dynamic) popUpMenuOnSelected}) {
@@ -37,7 +41,7 @@ class Vehicle {
       icon: icon,
       title: carName,
       elevation:  selectedVehicle ? 5.0 : 0.0,
-      subtext1: 'Last Travelled - $lastTravelled',
+//      subtext1: 'Last Travelled - $lastTravelled',
       subtextColor: selectedVehicle ? Colors.white : Colors.grey.shade600,
       popUpMenuItems: <PopupMenuItem>[
         PopupMenuItem(
@@ -63,16 +67,6 @@ class Vehicle {
         ),
       ],
       popUpMenuOnSelected: popUpMenuOnSelected,
-//      popUpMenuOnSelected: (selectedPopUpItem) async{
-//        print('$carName and $selectedPopUpItem');
-//        if(selectedPopUpItem == 'Edit') {
-//          Vehicle editedVehicle = await Navigator.push(context,MaterialPageRoute(
-//              builder: (context) => NewVehicleScreen(this)
-//          ));
-//          if(editedVehicle!=null) {
-//          }
-//        }
-//      },
       bottomWidget: selectedVehicle && expandedVehicleDetails ? Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Row(
@@ -80,18 +74,17 @@ class Vehicle {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
             CustomizableCardInformationBottomWidget(
-              title: 'Journeys Completed',
-              value: 20,
+              title: 'Mileage',
+              value: finalMileage,
             ),
             CustomizableCardInformationBottomWidget(
-              title: 'Kilometers Travelled',
-              value: 751,
-              unit: 'Km',
-            ),
-            CustomizableCardInformationBottomWidget(
-              title: 'Fuel Saved',
-              value: 20,
+              title: 'Tank Capacity',
+              value: tankCapacity.floorToDouble(),
               unit: 'L',
+            ),
+            CustomizableCardInformationBottomWidget(
+              title: 'Fuel Type',
+              textValue: fuelType.toString().split('.')[1],
             ),
           ],
         ),

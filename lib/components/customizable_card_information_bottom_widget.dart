@@ -5,10 +5,11 @@ class CustomizableCardInformationBottomWidget extends StatelessWidget {
   final String title;
   final double value;
   final String unit;
+  final String textValue;
   final bool unitAfterTitle;
   final Color titleColor;
 
-  CustomizableCardInformationBottomWidget({this.title,this.value,this.unit = '',this.unitAfterTitle=true,this.titleColor});
+  CustomizableCardInformationBottomWidget({this.title,this.value,this.unit = '',this.unitAfterTitle=true,this.titleColor,this.textValue=''});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,7 @@ class CustomizableCardInformationBottomWidget extends StatelessWidget {
             height: 10.0,
           ),
           Text(
-            unitAfterTitle==true ? '$value $unit' : '$unit $value',
+            value != null ? (unitAfterTitle==true ? '$value $unit' : '$unit $value') : textValue,
             textAlign: TextAlign.center,
             style: TextStyle(
                 color: Colors.greenAccent,

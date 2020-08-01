@@ -4,6 +4,7 @@ import 'package:sih2020/components/vehicle.dart';
 import 'package:sih2020/components/side_menu_drawer.dart';
 import 'package:sih2020/screens/add_new_vehicle_screen.dart';
 import 'package:sih2020/screens/destination_screen.dart';
+import 'package:sih2020/constants.dart';
 
 class VehicleListScreen extends StatefulWidget {
   static String screenID = 'vehicle_list_screen';
@@ -16,15 +17,24 @@ class _VehicleListScreenState extends State<VehicleListScreen> {
   List<Vehicle> vehicleList = <Vehicle>[
     Vehicle(
       carName: 'MG Hector',
-      lastTravelled: '16 hours ago'
+      finalMileage: 10.0,
+      tankCapacity: 30.0,
+      fuelType: FuelTypes.Petrol,
+//      lastTravelled: '16 hours ago'
     ),
     Vehicle(
       carName: 'Swift',
-      lastTravelled: 'Yesterday'
+      finalMileage: 20.0,
+      tankCapacity: 40.0,
+      fuelType: FuelTypes.Petrol,
+//      lastTravelled: 'Yesterday'
     ),
     Vehicle(
       carName: 'Nixon',
-      lastTravelled: '10 days ago'
+      finalMileage: 20.0,
+      tankCapacity: 40.0,
+      fuelType: FuelTypes.CNG,
+//      lastTravelled: '10 days ago'
     ),
   ];
 

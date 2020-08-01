@@ -5,6 +5,8 @@ import 'package:sih2020/constants.dart';
 
 const double maxKilometersDriven = 1000.0;
 const double minKilometersDriven = 0.0;
+const double maxTankCapacity = 70.0;
+const double defaultTankCapacity = 50.0;
 const double maxMileage = 40.0;
 const double minMileage = 0.0;
 const FuelTypes initialFuelType = FuelTypes.Petrol;
@@ -22,6 +24,7 @@ class _NewVehicleScreenState extends State<NewVehicleScreen> {
   Vehicle vehicle;
   String carName;
   FuelTypes fuelType;
+  double tankCapacity;
   double kilometersDriven;
   RangeValues mileage;
   DateTime serviceDate;
@@ -33,6 +36,7 @@ class _NewVehicleScreenState extends State<NewVehicleScreen> {
     vehicle = widget.vehicle;
     carName = vehicle.carName;
     fuelType = vehicle.fuelType ?? initialFuelType;
+    tankCapacity = vehicle.tankCapacity ?? defaultTankCapacity;
     kilometersDriven = vehicle.kilometersDriven ?? maxKilometersDriven;
     mileage = vehicle.mileage ?? RangeValues(minMileage,maxMileage);
     serviceDate = vehicle.serviceDate;
@@ -56,8 +60,10 @@ class _NewVehicleScreenState extends State<NewVehicleScreen> {
               else{
                 vehicle.carName=carName;
                 vehicle.fuelType=fuelType;
+                vehicle.tankCapacity=tankCapacity;
                 vehicle.kilometersDriven=kilometersDriven;
                 vehicle.mileage=mileage;
+                vehicle.finalMileage=(mileage.start+mileage.end)/2;
                 vehicle.serviceDate=serviceDate;
                 vehicle.buyDate=buyDate;
                 Navigator.pop(
@@ -129,7 +135,47 @@ class _NewVehicleScreenState extends State<NewVehicleScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 20.0,bottom: 10.0),
+                padding: const EdgeInsets.only(top: 20.0,bottom: 0.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15.9),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Text(
+                            'Fuel Tank Capacity',
+                            style: TextStyle(
+                              fontSize: 19.0,
+                            ),
+                          ),
+                          Text(
+                            '${tankCapacity.floor()} L',
+                            style: TextStyle(
+                                fontSize: 18.0
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Slider(
+                      onChanged: (double value) {
+                        setState(() {
+                          tankCapacity = value;
+                        });
+                      },
+                      min: 20.0,
+                      max: maxTankCapacity,
+                      divisions: 13,
+                      value: tankCapacity,
+                      label: '${tankCapacity.floor()}',
+                    )
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 10.0,bottom: 10.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
