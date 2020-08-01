@@ -6,6 +6,7 @@ import 'package:sih2020/components/fuel_stations.dart';
 import 'package:sih2020/constants.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:sih2020/components/customizable_card_information_bottom_widget.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 const double minHeight= 80.0;
 
