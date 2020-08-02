@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+const double initialPumpRating = 3;
+
 class ReviewScreen extends StatefulWidget {
   static String screenID = 'review_screen';
 
@@ -11,6 +13,13 @@ class ReviewScreen extends StatefulWidget {
 }
 
 class _ReviewScreenState extends State<ReviewScreen> {
+
+  double pumpRating = initialPumpRating;
+  bool washroom = true;
+  bool airPump = true;
+  bool restaurantNearby = true;
+  String feedback = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +59,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
                     style: TextStyle(fontSize: 20),
                   ),
                   RatingBar(
-                    initialRating: 3,
+                    initialRating: initialPumpRating,
                     minRating: 1,
                     direction: Axis.horizontal,
                     allowHalfRating: true,
@@ -61,7 +70,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
                       color: Colors.amber,
                     ),
                     onRatingUpdate: (rating) {
-                      print(rating);
+                      pumpRating=rating;
                     },
                   ),
                 ],
@@ -110,7 +119,14 @@ class _ReviewScreenState extends State<ReviewScreen> {
                               Text('Washroom'),
                             ],
                           ),
-                          YesNoDropDown(),
+                          YesNoDropDown(
+                            dropdownValue: washroom?'Yes' : 'No',
+                            onChanged: (String newValue) {
+                              setState(() {
+                                washroom = newValue=='Yes' ? true:false;
+                              });
+                            },
+                          ),
                         ],
                       ),
                     ),
@@ -128,7 +144,14 @@ class _ReviewScreenState extends State<ReviewScreen> {
                               Text('Air Pump'),
                             ],
                           ),
-                          YesNoDropDown(),
+                          YesNoDropDown(
+                            dropdownValue: airPump?'Yes' : 'No',
+                            onChanged: (String newValue) {
+                              setState(() {
+                                airPump = newValue=='Yes' ? true:false;
+                              });
+                            },
+                          ),
                         ],
                       ),
                     ),
@@ -146,7 +169,14 @@ class _ReviewScreenState extends State<ReviewScreen> {
                               Text('Restaurant Nearby'),
                             ],
                           ),
-                          YesNoDropDown(),
+                          YesNoDropDown(
+                            dropdownValue: restaurantNearby?'Yes' : 'No',
+                            onChanged: (String newValue) {
+                              setState(() {
+                                restaurantNearby = newValue=='Yes' ? true:false;
+                              });
+                            },
+                          ),
                         ],
                       ),
                     ),
@@ -160,6 +190,9 @@ class _ReviewScreenState extends State<ReviewScreen> {
                           child: TextField(
                             decoration: InputDecoration(
                                 border: InputBorder.none, hintText: 'Feedback'),
+                            onChanged: (String feedbackText) {
+                              feedback=feedbackText;
+                            },
                           ),
                         ),
                       ),
@@ -168,7 +201,21 @@ class _ReviewScreenState extends State<ReviewScreen> {
                       height: 10,
                     ),
                     RaisedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        ReviewResponse reviewResponse = ReviewResponse(
+                          pumpRating: pumpRating,
+                          washroom: washroom,
+                          airPump: airPump,
+                          restaurantNearby: restaurantNearby,
+                        );
+
+                        // Call Post API to submit reviews in the backend
+                        // To access user inputs use reviewResponse object created above,
+                        // reviewResponse.pumpRating will give double
+                        // reviewResponse.washroom will give bool
+                        // reviewResponse.airPump will give bool
+                        // reviewResponse.restaurantNearby will give bool
+                      },
                       child: Text('Submit', style: TextStyle(fontSize: 20)),
                     )
                   ],
@@ -181,14 +228,14 @@ class _ReviewScreenState extends State<ReviewScreen> {
   }
 }
 
-class YesNoDropDown extends StatefulWidget {
+class YesNoDropDown extends StatelessWidget {
+  final String dropdownValue;
+  final Function(String) onChanged;
 
-  @override
-  _YesNoDropDownState createState() => _YesNoDropDownState();
-}
-
-class _YesNoDropDownState extends State<YesNoDropDown> {
-  String dropdownValue = 'Yes';
+  YesNoDropDown({
+    this.dropdownValue = 'Yes',
+    @required this.onChanged
+});
 
   @override
   Widget build(BuildContext context) {
@@ -202,11 +249,7 @@ class _YesNoDropDownState extends State<YesNoDropDown> {
         height: 2,
         color: Colors.deepPurpleAccent,
       ),
-      onChanged: (String newValue) {
-        setState(() {
-          dropdownValue = newValue;
-        });
-      },
+      onChanged: onChanged,
       items:
       <String>['Yes', 'No'].map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
@@ -218,3 +261,12 @@ class _YesNoDropDownState extends State<YesNoDropDown> {
   }
 }
 
+class ReviewResponse {
+  double pumpRating;
+  bool washroom;
+  bool airPump;
+  bool restaurantNearby;
+  String feedback;
+
+  ReviewResponse({this.restaurantNearby,this.airPump,this.washroom,this.feedback,this.pumpRating});
+}
