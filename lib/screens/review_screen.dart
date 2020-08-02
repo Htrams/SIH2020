@@ -110,14 +110,11 @@ class _ReviewScreenState extends State<ReviewScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              Icon(FontAwesomeIcons.foursquare),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text('Washroom'),
-                            ],
+                          Text(
+                            'Washroom',
+                            style: TextStyle(
+                              fontSize: 20.0,
+                            ),
                           ),
                           YesNoDropDown(
                             dropdownValue: washroom?'Yes' : 'No',
@@ -135,14 +132,11 @@ class _ReviewScreenState extends State<ReviewScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              Icon(Icons.looks_one),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text('Air Pump'),
-                            ],
+                          Text(
+                            'Air Pump',
+                            style: TextStyle(
+                              fontSize: 20.0,
+                            ),
                           ),
                           YesNoDropDown(
                             dropdownValue: airPump?'Yes' : 'No',
@@ -160,14 +154,11 @@ class _ReviewScreenState extends State<ReviewScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              Icon(Icons.looks_one),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text('Restaurant Nearby'),
-                            ],
+                          Text(
+                            'Restaurant Nearby',
+                            style: TextStyle(
+                              fontSize: 20.0,
+                            ),
                           ),
                           YesNoDropDown(
                             dropdownValue: restaurantNearby?'Yes' : 'No',
@@ -188,7 +179,10 @@ class _ReviewScreenState extends State<ReviewScreen> {
                         child: Padding(
                           padding: EdgeInsets.only(left: 10),
                           child: TextField(
+                            maxLines: 4,
                             decoration: InputDecoration(
+                              fillColor: Colors.white,
+                                filled: true,
                                 border: InputBorder.none, hintText: 'Feedback'),
                             onChanged: (String feedbackText) {
                               feedback=feedbackText;
@@ -254,7 +248,12 @@ class YesNoDropDown extends StatelessWidget {
       <String>['Yes', 'No'].map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
           value: value,
-          child: Text(value),
+          child: Text(
+            value,
+            style: TextStyle(
+              fontSize: 20.0,
+            ),
+          ),
         );
       }).toList(),
     );
