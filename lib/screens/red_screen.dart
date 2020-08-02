@@ -7,6 +7,9 @@ import 'package:sih2020/constants.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:sih2020/components/customizable_card_information_bottom_widget.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:sih2020/services/map_helper_functions.dart';
+import 'package:geocoder/geocoder.dart';
+import 'dart:async';
 
 const double minHeight= 80.0;
 
@@ -20,11 +23,11 @@ class RedScreen extends StatefulWidget {
 List<FuelStation> stations = <FuelStation>[
   FuelStation(
     stationName: 'Indian Oil',
-    rating: 3.5,
+    rating: 5,
   ),
   FuelStation(
     stationName: 'Hindustan Petroleum',
-    rating: 5.0,
+    rating: 4.5,
   ),
   FuelStation(
     stationName: 'Oil India',
@@ -39,9 +42,17 @@ class _RedScreenState extends State<RedScreen> {
     topRight: Radius.circular(30.0),
   );
 
-  mode activeMode = mode.red;
+  mode activeMode = mode.green;
   int pumpMoreDetails = -1;
+
   PanelController slidingPanelController = PanelController();
+
+  GoogleMapController mapController;
+  static final LatLng _initialCenter = const LatLng(20.1492, 85.6652);
+  LatLng _currentCenter = _initialCenter;
+  String _currentAddress;
+  Set<Marker> _marker;
+
 
   TableRow getCheckedTwoColumnTableRow(String text, bool check) {
     return TableRow(
@@ -71,6 +82,21 @@ class _RedScreenState extends State<RedScreen> {
         ]
     );
   }
+  @override
+  void initState() {
+    super.initState();
+    const oneSec = const Duration(seconds:20);
+    new Timer.periodic(oneSec, (Timer t) {
+      if (activeMode == mode.green) {
+        activeMode=mode.yellow;
+      }
+      else if(activeMode == mode.yellow) {
+        activeMode=mode.red;
+      }
+      setState(() {
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +118,6 @@ class _RedScreenState extends State<RedScreen> {
         borderRadius: radius,
         header: GestureDetector(
           onTapDown: (details) async{
-            print('hello');
             if(slidingPanelController.isPanelOpen) {
               await slidingPanelController.close();
             }
@@ -224,8 +249,44 @@ class _RedScreenState extends State<RedScreen> {
             },
           ),
         ),
-        body: Center(
-          child: Text('Map'),
+        body:
+        Center(
+          child: Stack(
+            children: <Widget>[
+              GoogleMap(
+                onMapCreated: (GoogleMapController controller) {
+                  // Set the controller of map when it is created.
+                  mapController = controller;
+                },
+                initialCameraPosition: CameraPosition(
+                  target: _initialCenter,
+                  zoom: 11.0
+                ),
+                markers: _marker,
+                onCameraMove: (CameraPosition position) {
+                  _currentCenter = position.target;
+                  _marker = {
+                    Marker(
+                      markerId: MarkerId(_currentCenter.toString()),
+                      position: _currentCenter,
+                      icon: BitmapDescriptor.defaultMarker,
+                      infoWindow: InfoWindow(
+                        title: _currentAddress,
+                      )
+                    )
+                  };
+                  setState(() {
+
+                  });
+                },
+                onCameraIdle: () async{
+                  var address = await Geocoder.local.findAddressesFromCoordinates(Coordinates(_currentCenter.latitude,_currentCenter.longitude));
+                  _currentAddress = '${address.first.addressLine}';
+                },
+              ),
+
+            ],
+          ),
         ),
       ),
     );

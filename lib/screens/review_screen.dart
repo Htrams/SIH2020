@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ReviewScreen extends StatefulWidget {
   static String screenID = 'review_screen';
@@ -101,7 +103,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
                         children: <Widget>[
                           Row(
                             children: <Widget>[
-                              Icon(Icons.looks_one),
+                              Icon(FontAwesomeIcons.foursquare),
                               SizedBox(
                                 width: 10,
                               ),
