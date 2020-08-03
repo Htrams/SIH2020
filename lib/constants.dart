@@ -11,7 +11,8 @@ enum FuelTypes {
 enum mode{
   red,
   yellow,
-  green
+  green,
+  unknown,
 }
 
 class Mode {
@@ -40,9 +41,15 @@ Mode red = Mode(
     title: 'Fuel Critical',
     message: 'Refuel on the next gas station'
 );
+Mode unknown = Mode(
+  color: Colors.grey,
+  title: 'Loading',
+  message: 'Loading'
+);
 
 Map<mode,Mode> modeInfo = {
   mode.green : green,
   mode.yellow: yellow,
   mode.red: red,
+  mode.unknown: unknown
 };

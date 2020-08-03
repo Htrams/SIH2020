@@ -24,9 +24,8 @@ class _ReviewScreenState extends State<ReviewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Center(
-            child: Text('Review'),
-          ),
+          centerTitle: true,
+          title: Text('Review'),
         ),
         body: SingleChildScrollView(
           child: Column(

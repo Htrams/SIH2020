@@ -8,8 +8,8 @@ import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:sih2020/components/customizable_card_information_bottom_widget.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sih2020/services/map_helper_functions.dart';
-import 'package:geocoder/geocoder.dart';
 import 'dart:async';
+import 'package:sih2020/screens/end_journey_screen.dart';
 
 const double minHeight= 80.0;
 const int initialFuel = 10;
@@ -44,10 +44,11 @@ class _RedScreenState extends State<RedScreen> {
     topRight: Radius.circular(30.0),
   );
 
-  mode activeMode = mode.red;
+  mode activeMode = mode.unknown;
   int _pumpMoreDetails = -1;
 
   PanelController slidingPanelController = PanelController();
+  Timer timer;
 
   GoogleMapController mapController;
   static final LatLng _initialCenter = const LatLng(20.1492, 85.6652);
@@ -112,8 +113,8 @@ class _RedScreenState extends State<RedScreen> {
       fuelRemaining: fuelRemaining,
       distanceRemaining: distanceRemaining
     );
-    fuelRemaining=statusData['fuelRemaining'];
-    distanceRemaining=statusData['distanceRemaining'];
+    fuelRemaining=statusData['fuelRemaining'] - 1;
+    distanceRemaining=statusData['distanceRemaining'] - 10;
     mileage=statusData['mileage'];
     distanceAllowed=statusData['distanceAllowed'];
     activeMode=_modeStringToEnum(statusData['mode']);
@@ -123,10 +124,17 @@ class _RedScreenState extends State<RedScreen> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    timer.cancel();
+  }
+
+
+  @override
   void initState() {
     super.initState();
     const duration = const Duration(seconds:10);
-    new Timer.periodic(duration, (Timer t) {
+    timer = Timer.periodic(duration, (Timer t) {
       updateVehicleStatus();
     });
   }
@@ -135,11 +143,46 @@ class _RedScreenState extends State<RedScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: modeInfo[activeMode].color,
         title: Text(
-            modeInfo[activeMode].title
+            modeInfo[activeMode].title,
+          style: TextStyle(
+            fontSize: 20.0,
+            color: Colors.black
+          ),
         ),
         centerTitle: true,
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 20.0),
+            child: InkWell(
+              onTap: (){
+                Navigator.push(context,MaterialPageRoute(
+                    builder: (context) => EndJourneyScreen()));
+                timer.cancel();
+              },
+              child: Row(
+                children: <Widget>[
+                  Icon(
+                    FontAwesomeIcons.windowClose,
+                    color: Colors.black,
+                  ),
+                  SizedBox(
+                    width: 5.0,
+                  ),
+                  Text(
+                    'End',
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      color: Colors.black
+                    ),
+                  )
+                ],
+              ),
+            ),
+          )
+        ],
       ),
       body: SlidingUpPanel(
         controller: slidingPanelController,
@@ -319,31 +362,31 @@ class _RedScreenState extends State<RedScreen> {
               ),
               Container(
                 height: 90.0,
-                color: Color(0xDDFFFFFF),
+                color: Color(0xEEFFFFFF),
                 child: Row(
                   children: <Widget>[
                     CustomizableCardInformationBottomWidget(
                       title: 'Fuel Remaining',
                       titleColor: Colors.black,
                       titleBold: false,
-                      subColor: modeInfo[activeMode].color,
-                      value: fuelRemaining!=null ? fuelRemaining.toDouble() : null,
+                      subColor: Colors.black,
+                      value: (activeMode==mode.unknown) ? null : (fuelRemaining!=null ? fuelRemaining.toDouble() : null),
                     ),
                     VerticalDivider(),
                     CustomizableCardInformationBottomWidget(
                       title: 'Distance Remaining',
                       titleColor: Colors.black,
                       titleBold: false,
-                      subColor: modeInfo[activeMode].color,
-                      value: distanceRemaining!=null ? distanceRemaining.toDouble() : null,
+                      subColor: Colors.black,
+                      value: (activeMode==mode.unknown) ? null : (distanceRemaining!=null ? distanceRemaining.toDouble() : null),
                     ),
                     VerticalDivider(),
                     CustomizableCardInformationBottomWidget(
                       title: 'Distance Allowed',
                       titleColor: Colors.black,
                       titleBold: false,
-                      subColor: modeInfo[activeMode].color,
-                      value: distanceAllowed!=null ? distanceAllowed.toDouble() : null,
+                      subColor: Colors.black,
+                      value: (activeMode==mode.unknown) ? null : (distanceAllowed!=null ? distanceAllowed.toDouble() : null),
                     )
                   ],
                 ),
