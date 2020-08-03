@@ -17,4 +17,20 @@ class NetworkHelper {
       print(response.statusCode);
     }
   }
+  Future<dynamic> postData({Map<dynamic,dynamic> body}) async{
+    http.Response response = await http.post(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(body)
+    );
+    if (response.statusCode == 200) {
+      String data = response.body;
+      return jsonDecode(data);
+    }
+    else {
+      print(response.statusCode);
+    }
+  }
 }

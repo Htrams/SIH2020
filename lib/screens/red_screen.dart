@@ -12,6 +12,8 @@ import 'package:geocoder/geocoder.dart';
 import 'dart:async';
 
 const double minHeight= 80.0;
+const int initialFuel = 10;
+const int initialDistancetoDestination = 100;
 
 class RedScreen extends StatefulWidget {
   static String screenID = 'red_screen';
@@ -42,8 +44,8 @@ class _RedScreenState extends State<RedScreen> {
     topRight: Radius.circular(30.0),
   );
 
-  mode activeMode = mode.green;
-  int pumpMoreDetails = -1;
+  mode activeMode = mode.red;
+  int _pumpMoreDetails = -1;
 
   PanelController slidingPanelController = PanelController();
 
@@ -52,6 +54,13 @@ class _RedScreenState extends State<RedScreen> {
   LatLng _currentCenter = _initialCenter;
   String _currentAddress;
   Set<Marker> _marker;
+
+  MapHelper _mapHelper = MapHelper();
+  int fuelRemaining = initialFuel;
+  int distanceRemaining = initialDistancetoDestination;
+  int mileage;
+  int distanceAllowed;
+
 
 
   TableRow getCheckedTwoColumnTableRow(String text, bool check) {
@@ -82,19 +91,43 @@ class _RedScreenState extends State<RedScreen> {
         ]
     );
   }
+
+  mode _modeStringToEnum(String text) {
+    if(text=='Red') {
+      return mode.red;
+    }
+    else if(text=='Yellow') {
+      return mode.yellow;
+    }
+    else if(text=='Green') {
+      return mode.green;
+    }
+    else {
+      return null;
+    }
+  }
+
+  Future<void> updateVehicleStatus() async{
+    var statusData = await _mapHelper.getVehicleStatusData(
+      fuelRemaining: fuelRemaining,
+      distanceRemaining: distanceRemaining
+    );
+    fuelRemaining=statusData['fuelRemaining'];
+    distanceRemaining=statusData['distanceRemaining'];
+    mileage=statusData['mileage'];
+    distanceAllowed=statusData['distanceAllowed'];
+    activeMode=_modeStringToEnum(statusData['mode']);
+    setState(() {
+
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    const oneSec = const Duration(seconds:20);
-    new Timer.periodic(oneSec, (Timer t) {
-      if (activeMode == mode.green) {
-        activeMode=mode.yellow;
-      }
-      else if(activeMode == mode.yellow) {
-        activeMode=mode.red;
-      }
-      setState(() {
-      });
+    const duration = const Duration(seconds:10);
+    new Timer.periodic(duration, (Timer t) {
+      updateVehicleStatus();
     });
   }
 
@@ -181,10 +214,10 @@ class _RedScreenState extends State<RedScreen> {
             itemBuilder: (context, int index) {
               return GestureDetector(
                 onTap: () {
-                  if (pumpMoreDetails!=-1 && pumpMoreDetails==index)
-                    pumpMoreDetails=-1;
+                  if (_pumpMoreDetails!=-1 && _pumpMoreDetails==index)
+                    _pumpMoreDetails=-1;
                   else
-                    pumpMoreDetails=index;
+                    _pumpMoreDetails=index;
                   setState(() {
                   });
                 },
@@ -240,7 +273,7 @@ class _RedScreenState extends State<RedScreen> {
                       ),
                     ),
                   ),
-                  openExpandableWidget: pumpMoreDetails == index,
+                  openExpandableWidget: _pumpMoreDetails == index,
                 ),
               );
             },
@@ -280,11 +313,41 @@ class _RedScreenState extends State<RedScreen> {
                   });
                 },
                 onCameraIdle: () async{
-                  var address = await Geocoder.local.findAddressesFromCoordinates(Coordinates(_currentCenter.latitude,_currentCenter.longitude));
-                  _currentAddress = '${address.first.addressLine}';
+//                  var address = await Geocoder.local.findAddressesFromCoordinates(Coordinates(_currentCenter.latitude,_currentCenter.longitude));
+//                  _currentAddress = '${address.first.addressLine}';
                 },
               ),
-
+              Container(
+                height: 90.0,
+                color: Color(0xDDFFFFFF),
+                child: Row(
+                  children: <Widget>[
+                    CustomizableCardInformationBottomWidget(
+                      title: 'Fuel Remaining',
+                      titleColor: Colors.black,
+                      titleBold: false,
+                      subColor: modeInfo[activeMode].color,
+                      value: fuelRemaining!=null ? fuelRemaining.toDouble() : null,
+                    ),
+                    VerticalDivider(),
+                    CustomizableCardInformationBottomWidget(
+                      title: 'Distance Remaining',
+                      titleColor: Colors.black,
+                      titleBold: false,
+                      subColor: modeInfo[activeMode].color,
+                      value: distanceRemaining!=null ? distanceRemaining.toDouble() : null,
+                    ),
+                    VerticalDivider(),
+                    CustomizableCardInformationBottomWidget(
+                      title: 'Distance Allowed',
+                      titleColor: Colors.black,
+                      titleBold: false,
+                      subColor: modeInfo[activeMode].color,
+                      value: distanceAllowed!=null ? distanceAllowed.toDouble() : null,
+                    )
+                  ],
+                ),
+              )
             ],
           ),
         ),

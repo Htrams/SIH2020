@@ -8,8 +8,10 @@ class CustomizableCardInformationBottomWidget extends StatelessWidget {
   final String textValue;
   final bool unitAfterTitle;
   final Color titleColor;
+  final Color subColor;
+  final bool titleBold;
 
-  CustomizableCardInformationBottomWidget({this.title,this.value,this.unit = '',this.unitAfterTitle=true,this.titleColor,this.textValue=''});
+  CustomizableCardInformationBottomWidget({this.title,this.value,this.unit = '',this.unitAfterTitle=true,this.titleColor,this.textValue='',this.titleBold=true,this.subColor});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class CustomizableCardInformationBottomWidget extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                   fontSize: 17.0,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: titleBold ? FontWeight.bold : FontWeight.normal,
                   color: titleColor ?? Colors.green.shade50
               ),
             ),
@@ -38,7 +40,7 @@ class CustomizableCardInformationBottomWidget extends StatelessWidget {
             value != null ? (unitAfterTitle==true ? '$value $unit' : '$unit $value') : textValue,
             textAlign: TextAlign.center,
             style: TextStyle(
-                color: Colors.greenAccent,
+                color: subColor ?? Colors.greenAccent,
                 fontWeight: FontWeight.bold,
                 fontSize: 22.0
             ),
